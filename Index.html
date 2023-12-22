@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="flightReservationApp">
+<head>
+  <title>D-RO Flight Reservations</title>
+  <link rel="stylesheet" href="Styles.css"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="ReservationController">
+  <header>
+    <h1>Welcome to D-RO Flight Reservations</h1>
+  </header>
+  
+  <main>
+    <section class="search-section">
+      <h2>Find Your Flight</h2>
+      <form>
+        <div class="input-group">
+          <label for="origin">From:</label>
+          <input type="text" id="origin" placeholder="Enter origin" ng-model="reservation.origin">
+        </div>
+
+        <div class="input-group">
+          <label for="destination">To:</label>
+          <input type="text" id="destination" placeholder="Enter destination" ng-model="reservation.destination">
+        </div>
+
+        <div class="input-group">
+          <label for="date">Date:</label>
+          <input type="date" id="date" ng-model="reservation.date">
+        </div>
+
+        <button ng-click="searchFlights()">Search Flights</button>
+      </form>
+    </section>
+
+    <section class="flight-list" ng-if="showFlights">
+      <h2>Available Flights</h2>
+      <ul>
+        <li ng-repeat="flight in flights">
+          <div class="flight-info">
+            <div class="flight-details">
+              <h3>Flight {{ flight.id }}</h3>
+              <p>{{ flight.origin }} to {{ flight.destination }}</p>
+              <p>Date: {{ flight.date }}</p>
+              <p>Price: {{ flight.price | currency }}</p>
+            </div>
+            <div class="reserve-btn">
+              <button ng-click="reserveFlight(flight.id)">Reserve</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 D-RO Flight Reservations</p>
+  </footer>
+
+  <script>z
+    angular.module('flightReservationApp', [])
+      .controller('ReservationController', function($scope) {
+    $scope.reservation = {};
+    $scope.showFlights = false;
+    $scope.flights = [];
+
+    $scope.searchFlights = function() {
+      $scope.flights = [
+        { id: 1, origin: 'Cambodia', destination: 'Japan', date: '2023-12-25', price: 450 },
+        { id: 2, origin: 'Cambodia', destination: 'Phillipine', date: '2023-12-26', price: 300 },
+        { id: 3, origin: 'India', destination: 'Philippines', date: '2023-12-26', price: 400 },
+        { id: 4, origin: 'India', destination: 'Cambodia', date: '2023-12-26', price: 250 },
+        { id: 5, origin: 'India', destination: 'Philippines', date: '2023-12-26', price: 350 },
+        { id: 6, origin: 'Cambodia', destination: 'India', date: '2023-12-26', price: 250 },
+        { id: 7, origin: 'Cambodia', destination: 'Singapore', date: '2023-12-26', price: 125 },
+        { id: 8, origin: 'India', destination: 'Japan', date: '2023-12-26', price: 500 },
+      ];
+      $scope.showFlights = true;
+    };
+    if ($scope.reservation.origin) { 
+          $scope.flights = allFlights.filter(function (flight) {
+            return flight.origin.toLowerCase() === $scope.reservation.origin.toLowerCase();
+          });
+
+          $scope.showFlights = true;
+        } else {
+          
+          $scope.flights = [];
+          $scope.showFlights = false;
+        }
+      
+
+    $scope.reserveFlight = function(flightId) {
+      alert('Reserved Flight ' + flightId);
+    };
+
+    $scope.getPriceCategory = function(price) {
+      if (price < 300) {
+        return 'Low Price';
+      } else if (price >= 300 && price < 500) {
+        return 'Medium Price';
+      } else {
+        return 'High Price';
+      }
+    };
+  });
+  </script>
+  </body>
+</html>
